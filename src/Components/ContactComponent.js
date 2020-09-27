@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, Button, Col, Row, Label } from 'reactstrap';
 import {Control, Errors, LocalForm} from "react-redux-form";
 
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => (val) && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); 
 
 class Contact extends Component{
 
@@ -77,7 +82,19 @@ class Contact extends Component{
                                 <Col md={10}>
                                     <Control.text model =".firstname" id="firstname" name="firstname"
                                         placeholder="First Name"
-                                        className= "form-control" />
+                                        className= "form-control" 
+                                        validators = {{required, minLength: minLength(2), maxLength: maxLength(15)}}/>
+                                    <Errors
+                                        className="text-danger"
+                                        model = ".firstname"
+                                        show="touched"
+                                        messages = {{
+                                            required:"The input cannot be empty! ",
+                                            minLength: "The first name cant have more than 15 and less than 2 characters!",
+                                            maxLength: "The first name cant have more than 15 and less than 2 characters!"
+                                        }}
+
+                                    />
                                     
                                 </Col>
                     </Row>
@@ -86,7 +103,19 @@ class Contact extends Component{
                                 <Col md={10}>
                                     <Control.text model=".lastname" id="lastname" name="lastname"
                                         placeholder="Last Name"
-                                        className= "form-control"/>
+                                        className= "form-control"
+                                        validators = {{required, minLength: minLength(2), maxLength: maxLength(15)}}/>
+                                          <Errors
+                                        className="text-danger"
+                                        model = ".lastname"
+                                        show="touched"
+                                        messages = {{
+                                            required:"The input cannot be empty!",
+                                            minLength: "The last name cant have more than 15 and less than 2 characters!",
+                                            maxLength: "The last name cant have more than 15 and less than 2 characters!"
+                                        }}
+
+                                    />
                                     
                                 </Col>
                             </Row>
@@ -96,7 +125,20 @@ class Contact extends Component{
                                 <Col md={10}>
                                     <Control.text model=".telnum" id="telnum" name="telnum"
                                         placeholder="Tel. Number"
-                                        className="form-control" />
+                                        className="form-control"
+                                        validators = {{required, minLength: minLength(9), maxLength: maxLength(13), isNumber}} />
+                                    <Errors
+                                        className="text-danger"
+                                        model = ".telnum"
+                                        show="touched"
+                                        messages = {{
+                                            required:"The input cannot be empty!",
+                                            minLength: "The telephone number cant have more than 13 and less than 9 characters!",
+                                            maxLength: "The telephone number cant have more than 13 and less than 9 characters!",
+                                            isNumber: "Telephone number should consist number only."
+                                        }}
+
+                                    />
                                    
                                 </Col>
                             </Row>
@@ -105,7 +147,17 @@ class Contact extends Component{
                                 <Col md={10}>
                                     <Control.text model=".email" id="email" name="email"
                                         placeholder="Email"
-                                        className="form-control"/>
+                                        className="form-control"
+                                        validators = {{required, validEmail}}/>
+                                        <Errors
+                                            className ="text-danger"
+                                            model = ".email"
+                                            show="touched"
+                                            messages= {{
+                                                required: "This can't be left empty",
+                                                validEmail: "The email entered is invalid"
+                                            }}
+                                        />
                                     
                                 </Col>
                             </Row>
