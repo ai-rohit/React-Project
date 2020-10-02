@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {Card, CardTitle, CardImg, CardBody, CardText, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody,Row,Label,Col} from 'reactstrap';
 import {LocalForm, Control, Errors} from "react-redux-form";
+import { Loading } from './LoadingComponent';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
@@ -171,7 +172,23 @@ class CommentForm extends Component{
     
     const DishDetail = (props)=>{
 
-        if (props.selectedDish!=null) {
+        if (props.dishesLoading){
+            return(
+                <div className="container">
+                    <div className="row">
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }else if (props.dishesErrMess){
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.dishesErrMess}</h4>
+                    </div>
+                </div>
+            );
+        }else if (props.selectedDish!=null) {
             return(
                 <div className="container">
                     <div className="row">
